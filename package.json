@@ -1,0 +1,1 @@
+{"name":"yashraj-portfolio","version":"1.0.0","private":true,"type":"module","scripts":{"build":"vite build","dev":"vite --host"},"dependencies":{"@radix-ui/react-dialog":"^1.1.6","@vercel/blob":"^2.8.0","lucide-react":"^0.468.0","motion":"^12.0.0","react":"^19.1.0","react-dom":"^19.1.0"},"devDependencies":{"@vitejs/plugin-react":"^4.3.4","typescript":"^5.7.3","vite":"^6.1.0"}}

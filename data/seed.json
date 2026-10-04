@@ -1,0 +1,97 @@
+{
+  "profile": {
+    "name": "Yashraj Rathor",
+    "fullName": "Yashraj Radheshyam Rathor",
+    "role": "Data engineering & applied AI",
+    "location": "Navi Mumbai, India",
+    "email": "yashrajrathor2005@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/yashrajrr/",
+    "github": "",
+    "heroLead": "Good data.",
+    "heroSecond": "Better possibilities.",
+    "intro": "I’m Yashraj. I build data pipelines and intelligent systems that turn information into something useful.",
+    "aboutTitle": "Curiosity, with a technical backbone.",
+    "about": "I work at the intersection of data engineering and applied AI. From moving raw data through Azure to building retrieval systems and multi-agent workflows, I enjoy making complex systems feel clear and useful.\n\nMy background in Information Technology at SIES Graduate School of Technology grounds that curiosity in Python, SQL, and the fundamentals of software engineering.",
+    "availability": "Let’s talk data & AI",
+    "languages": "English, Hindi, Marathi",
+    "portrait": "/media/portrait.jpg",
+    "resume": "/media/resume.pdf",
+    "resumeLabel": "Download résumé",
+    "contactTitle": "Have something in mind?",
+    "contactText": "A data challenge, an interesting role, or an idea worth exploring. I’d love to hear about it."
+  },
+  "design": {
+    "accent": "#a7462d",
+    "font": "editorial",
+    "defaultTheme": "light",
+    "animations": true,
+    "showPortrait": true,
+    "showContactForm": true,
+    "showEducation": true,
+    "showCredentials": true
+  },
+  "projects": [
+    {
+      "id": "spotify-pipeline",
+      "title": "From raw tracks to ready-to-use data.",
+      "name": "Spotify Data Pipeline",
+      "category": "Data Engineering",
+      "period": "Jul 2026 — Present",
+      "summary": "An end-to-end Azure pipeline built around metadata-driven ingestion and a bronze-to-gold data architecture.",
+      "description": "A cloud data engineering project that moves Spotify data into Azure Data Lake Storage Gen2 through parameterized pipelines, then prepares it for downstream use with Databricks and PySpark.",
+      "bullets": ["Built metadata-driven, parameterized ingestion with Azure Data Factory.", "Implemented incremental loading and backfilling to reduce redundant processing.", "Applied cleaning, transformation, and validation across Bronze, Silver, and Gold layers."],
+      "tags": ["Azure Data Factory", "Databricks", "PySpark", "ADLS Gen2"],
+      "visual": "pipeline",
+      "url": "",
+      "repo": ""
+    },
+    {
+      "id": "memora",
+      "title": "Less searching. More understanding.",
+      "name": "Memora",
+      "category": "AI Systems",
+      "period": "Sep 2025 — Jun 2026",
+      "summary": "A semantic learning assistant that connects educational documents to contextual answers.",
+      "description": "Memora is an AI-powered semantic learning system built around Retrieval-Augmented Generation. It pairs intelligent document retrieval with vector embeddings to make educational content easier to explore.",
+      "bullets": ["Constructed a document retrieval pipeline for educational content.", "Used semantic search to improve information accessibility.", "Generated contextual responses using vector embeddings and retrieved knowledge."],
+      "tags": ["RAG", "Semantic Search", "Vector Embeddings"],
+      "visual": "search",
+      "url": "",
+      "repo": ""
+    },
+    {
+      "id": "agentic-analyst",
+      "title": "One question. The right workflow.",
+      "name": "Agentic Data Analyst",
+      "category": "AI Systems",
+      "period": "Sep 2026",
+      "summary": "A multi-agent system that routes natural-language requests into specialized SQL and ETL workflows.",
+      "description": "A data analyst and ETL automation system with an LLM-based router and two specialized agents. Its tool-driven workflows connect data questions with SQL execution and API-based extraction.",
+      "bullets": ["Designed a multi-agent architecture with specialized SQL and ETL agents.", "Built a 7-stage SQL workflow covering question curation, schema discovery, generation, safety validation, PostgreSQL execution, and response generation.", "Implemented API extraction and Pandas transformations with CSV, JSON, and Parquet outputs."],
+      "tags": ["LangGraph", "LangChain", "Python", "PostgreSQL"],
+      "visual": "agents",
+      "url": "",
+      "repo": ""
+    }
+  ],
+  "skills": [
+    {"title": "Data foundations", "description": "The tools I reach for first.", "items": ["Python", "SQL", "Pandas", "NumPy", "ETL", "Incremental loading", "Backfilling"]},
+    {"title": "Cloud & pipelines", "description": "From ingestion to transformation.", "items": ["Azure Data Factory", "Azure Data Lake", "Databricks", "PySpark"]},
+    {"title": "Intelligent systems", "description": "Making knowledge accessible.", "items": ["LangGraph", "LangChain", "RAG", "Semantic search", "Vector embeddings"]},
+    {"title": "Engineering essentials", "description": "A strong foundation underneath.", "items": ["Git", "GitHub", "Flask", "OOP", "Data structures", "DBMS"]}
+  ],
+  "experience": [
+    {"title": "Data Science Intern", "organization": "Reva Technologies", "period": "Jun — Jul 2025", "description": "Worked with climate datasets in Python and SQL for rainfall forecasting. Built and evaluated machine learning models for weather prediction, with a focus on preprocessing and feature engineering."},
+    {"title": "Class Representative", "organization": "Student Council", "period": "Jul 2024 — May 2025", "description": "Coordinated between students and faculty, managed academic activities, and represented student concerns. A practical lesson in communication, leadership, and teamwork."}
+  ],
+  "education": [
+    {"title": "B.E. in Information Technology", "organization": "SIES Graduate School of Technology", "period": "Aug 2023 — Jul 2026", "result": "9.3 / 10 CGPA"},
+    {"title": "Higher Secondary · Maharashtra", "organization": "Shiravane Vidyalaya and Junior College", "period": "Aug 2021 — Apr 2023", "result": "65.17%"},
+    {"title": "Secondary School", "organization": "St. Xavier’s High School & Jr. College", "period": "May 2020 — Aug 2021", "result": "89.00%"}
+  ],
+  "credentials": [
+    {"title": "Python for Data Science, AI & Development", "organization": "IBM · Coursera", "period": "Jul 2026", "type": "Certification"},
+    {"title": "Data Visualisation Job Simulation", "organization": "Tata · Forage", "period": "Jul 2025", "type": "Job simulation"},
+    {"title": "Second Prize · Cognition 2025", "organization": "AI-powered healthcare platform", "period": "2025", "type": "Award"}
+  ]
+}

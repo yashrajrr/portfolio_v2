@@ -1,0 +1,14 @@
+node_modules
+.venv
+.git
+.env*
+__pycache__
+*.pyc
+data/*.sqlite*
+data/original-resume.pdf
+data/*.png
+data/*.log
+qa_*.py
+blob_test.py
+server.vm-backup.py
+vercel-login.log
