@@ -8,9 +8,14 @@ import os
 import sqlite3
 import mimetypes
 import requests
+import threading
+import time
 
 BLOB_API = "https://blob.vercel-storage.com"
 DB_PATHNAME = "state/portfolio.sqlite"
+_blob_cache = {}
+_blob_cache_lock = threading.Lock()
+_CACHE_SECONDS = 10
 
 
 class StorageConflict(RuntimeError):
@@ -53,6 +58,11 @@ def blob_info(pathname):
 
 
 def get_blob(pathname):
+    now = time.monotonic()
+    with _blob_cache_lock:
+        cached = _blob_cache.get(pathname)
+        if cached and now - cached[0] < _CACHE_SECONDS:
+            return cached[1], cached[2], cached[3]
     info = blob_info(pathname)
     if not info:
         return None, None, None
@@ -62,7 +72,10 @@ def get_blob(pathname):
         timeout=30,
     )
     response.raise_for_status()
-    return response.content, info.get("etag"), info
+    result = (response.content, info.get("etag"), info)
+    with _blob_cache_lock:
+        _blob_cache[pathname] = (now, *result)
+    return result
 
 
 def put_blob(pathname, data, content_type=None, etag=None):
@@ -87,7 +100,10 @@ def put_blob(pathname, data, content_type=None, etag=None):
     if response.status_code == 412:
         raise StorageConflict("The portfolio changed in another request. Please retry.")
     response.raise_for_status()
-    return response.json()
+    result = response.json()
+    with _blob_cache_lock:
+        _blob_cache.pop(pathname, None)
+    return result
 
 
 class BlobConnection(sqlite3.Connection):
