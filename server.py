@@ -15,6 +15,7 @@ MEDIA.mkdir(exist_ok=True)
 DB = DATA / "portfolio.sqlite"
 OWNER = os.environ.get("PORTFOLIO_OWNER_ID", "8e5be353-bde4-4aba-9155-0b0526029d6e")
 REQUIRE_OWNER = os.environ.get("REQUIRE_PROMPTQL_OWNER", "true") == "true"
+ADMIN_RESET_TOKEN = os.environ.get("ADMIN_RESET_TOKEN", "")
 COOKIE = "__Host-portfolio-session"
 app = Flask(__name__, static_folder=None)
 app.config["MAX_CONTENT_LENGTH"] = 12 * 1024 * 1024
@@ -255,6 +256,24 @@ def login():
         return jsonify(error="Email or password is incorrect."),401
     with connect() as c: c.execute("DELETE FROM rate_limits WHERE key='login'")
     return login_response()
+
+@app.post("/api/auth/reset")
+def reset_password():
+    data = request.get_json() or {}
+    reset_token = str(data.get("token", ""))
+    email = str(data.get("email", "")).strip().lower()
+    password = str(data.get("password", ""))
+    if not ADMIN_RESET_TOKEN or not secrets.compare_digest(reset_token, ADMIN_RESET_TOKEN):
+        return jsonify(error="Password reset is not enabled or the reset token is invalid."), 403
+    if len(password) < 12 or len(password) > 256 or not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email):
+        return jsonify(error="Use a valid email and a password of 12–256 characters."), 400
+    with connect() as c:
+        admin = c.execute("SELECT id FROM admin WHERE id=1").fetchone()
+        if not admin:
+            return jsonify(error="Admin account has not been configured yet."), 404
+        c.execute("UPDATE admin SET email=?, password=? WHERE id=1", (email, generate_password_hash(password)))
+        c.execute("DELETE FROM sessions")
+    return jsonify(ok=True)
 
 @app.post("/api/auth/logout")
 @auth

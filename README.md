@@ -31,3 +31,21 @@ python -m venv .venv
 ```
 
 Without `BLOB_READ_WRITE_TOKEN`, the backend uses local SQLite and files under `data/`. On Vercel, private Blob storage is configured through environment variables.
+
+## Password recovery
+
+If the admin password is forgotten, temporarily add a strong random value as the
+`ADMIN_RESET_TOKEN` environment variable in Vercel, then send one request to
+`POST /api/auth/reset`:
+
+```json
+{
+  "token": "the-value-configured-in-vercel",
+  "email": "your-admin-email@example.com",
+  "password": "your-new-password"
+}
+```
+
+Include the `X-CSRF-Protection: 1` header. After the request succeeds, remove
+`ADMIN_RESET_TOKEN` from Vercel and redeploy. The reset preserves portfolio
+content, media, messages, and history.
