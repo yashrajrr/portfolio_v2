@@ -41,11 +41,11 @@ If the admin password is forgotten, temporarily add a strong random value as the
 ```json
 {
   "token": "the-value-configured-in-vercel",
-  "email": "your-admin-email@example.com",
   "password": "your-new-password"
 }
 ```
 
 Include the `X-CSRF-Protection: 1` header. After the request succeeds, remove
-`ADMIN_RESET_TOKEN` from Vercel and redeploy. The reset preserves portfolio
-content, media, messages, and history.
+`ADMIN_RESET_TOKEN` from Vercel and redeploy. The reset changes only the
+password and preserves the existing admin email, portfolio content, media,
+messages, and history.
