@@ -1,4 +1,4 @@
-import os, json, sqlite3, secrets, hashlib, time, base64, functools, re, io, tempfile
+import os, json, sqlite3, secrets, hashlib, time, functools, re, io, tempfile
 from pathlib import Path
 from urllib.parse import urlparse
 from flask import Flask, request, jsonify, send_from_directory, send_file, g
@@ -13,8 +13,6 @@ DATA = Path(os.environ.get("PORTFOLIO_DATA_DIR", str(ROOT / "data")))
 MEDIA = DATA / "media"
 MEDIA.mkdir(exist_ok=True)
 DB = DATA / "portfolio.sqlite"
-OWNER = os.environ.get("PORTFOLIO_OWNER_ID", "8e5be353-bde4-4aba-9155-0b0526029d6e")
-REQUIRE_OWNER = os.environ.get("REQUIRE_PROMPTQL_OWNER", "true") == "true"
 ADMIN_RESET_TOKEN = os.environ.get("ADMIN_RESET_TOKEN", "")
 COOKIE = "__Host-portfolio-session"
 app = Flask(__name__, static_folder=None)
@@ -149,19 +147,7 @@ def init():
     if not blob_enabled():
         os.chmod(DB, 0o600)
 
-def visitor_id():
-    token = request.headers.get("X-PromptQL-Visitor-Token","")
-    try:
-        payload = json.loads(base64.urlsafe_b64decode(token.split(".")[1] + "==="))
-        if float(payload.get("exp",0)) < time.time(): return None
-        return payload.get("sub")
-    except (ValueError, IndexError, TypeError): return None
-
-def owner_allowed():
-    return not REQUIRE_OWNER or visitor_id() == OWNER
-
 def session_ok():
-    if not owner_allowed(): return False
     token = request.cookies.get(COOKIE,"")
     if not token: return False
     with connect() as c:
@@ -170,7 +156,7 @@ def session_ok():
 def auth(fn):
     @functools.wraps(fn)
     def wrap(*args,**kwargs):
-        if not session_ok(): return jsonify(error="Sign in as the portfolio owner to continue."),401
+        if not session_ok(): return jsonify(error="Sign in to continue."),401
         return fn(*args,**kwargs)
     return wrap
 
@@ -221,7 +207,7 @@ def get_content():
 @app.get("/api/auth/status")
 def status():
     with connect() as c: configured=bool(c.execute("SELECT id FROM admin").fetchone())
-    return jsonify(configured=configured,owner=owner_allowed(),authenticated=session_ok())
+    return jsonify(configured=configured,owner=True,authenticated=session_ok())
 
 def login_response():
     token=secrets.token_urlsafe(48)
@@ -234,7 +220,6 @@ def login_response():
 
 @app.post("/api/auth/setup")
 def setup():
-    if not owner_allowed(): return jsonify(error="Only the portfolio owner can create the admin account."),403
     data=request.get_json() or {}
     email=str(data.get("email","")).strip().lower()
     password=str(data.get("password",""))
@@ -248,7 +233,6 @@ def setup():
 
 @app.post("/api/auth/login")
 def login():
-    if not owner_allowed(): return jsonify(error="Open this app using the portfolio owner's PromptQL account."),403
     if limited("login",8,900): return jsonify(error="Too many attempts. Try again in 15 minutes."),429
     data=request.get_json() or {}
     with connect() as c: a=c.execute("SELECT email,password FROM admin WHERE id=1").fetchone()
